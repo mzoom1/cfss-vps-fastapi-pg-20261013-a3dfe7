@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "kind": "DeploymentManifest",
+  "execution": {
+    "backend": "generic-oci",
+    "buildNetworkMode": "PROXY_ONLY",
+    "migrationCommand": ["python", "migrate.py", "--directory", "migrations"]
+  },
+  "services": [
+    {
+      "id": "api",
+      "kind": "HTTP_API",
+      "root": ".",
+      "port": {"mode": "environment", "variable": "PORT"},
+      "healthPath": "/healthz"
+    }
+  ],
+  "routes": [{"path": "/", "serviceId": "api"}],
+  "resources": {"postgres": {"required": true}},
+  "runtimeEnvironment": {"keys": [], "secretKeys": ["DATABASE_URL"]}
+}
